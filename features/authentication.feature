@@ -85,34 +85,34 @@ Feature: Authentication
         Given the user is not authenticated
         And the user is on the sign in page
         And the user has filled "<input-field>" input by inputting violated inputs
-        Then the user will see a "<error-message>" message in login page
+        Then the user shall see a "<error-message>" message for invalid inputs
         Examples:
             | input-field | error-message   |
-            |             | هذا الحقل مطلوب |
-            |             | هذا الحقل مطلوب |
+            | email       | هذا الحقل مطلوب |
+            | password    | هذا الحقل مطلوب |
 
 
-    Scenario: User did not activate the account through an email
-        Given the user is not authenticated
-        And the user is on the sign in page
-        And the user has filled the sign in form validly with unactivated email
-        And the user has not activated the account
-        When the user submit a sign in form
-        Then the user will be informed that his account not activated yet
+# Scenario: User did not activate the account through an email
+#     Given the user is not authenticated
+#     And the user is on the sign in page
+#     And the user has filled the sign in form validly with unactivated email
+#     And the user has not activated the account
+#     When the user submit a sign in form
+#     Then the user will be informed that his account not activated yet
 
-    Scenario: Invalid credentials account login
-        Given the user is on the sign in page
-        And the user inputted invalid input-fields login credentials
-        When the user submit a sign in form
-        Then the user will be informed that the credentials do not match our records.
+# Scenario: Invalid credentials account login
+#     Given the user is on the sign in page
+#     And the user inputted invalid input-fields login credentials
+#     When the user submit a sign in form
+#     Then the user will be informed that the credentials do not match our records.
 
-    Scenario: Login button to navigate the user to registeration section
-        Given the user is on the home page
-        And the user is not authenticated
-        When the user clicks on the login button
-        Then the page will be scrolled down to the login form inside the homepage
+# Scenario: Login button to navigate the user to registeration section
+#     Given the user is on the home page
+#     And the user is not authenticated
+#     When the user clicks on the login button
+#     Then the page will be scrolled down to the login form inside the homepage
 
-    Scenario: logout page
-        Given the user has typed in the url "/logout"
-        When the user presses enter
-        Then the user will logout from the website
+# Scenario: logout page
+#     Given the user has typed in the url "/logout"
+#     When the user presses enter
+#     Then the user will logout from the website

@@ -19,8 +19,9 @@ Given(/^the user is on the sign up page$/, async function () {
 });
 
 Given(/^the user is not authenticated$/, async function () {
-  // await expect(await signupPage.form).toBeExisting();
   browser.url("/logout");
+  await expect(await $("a[href='/login']")).toBeExisting();
+
 });
 
 Then(/^the user shall see a sign up form$/, async function () {
@@ -201,11 +202,13 @@ Then(
 */
 
 Given(/^the user is on the sign in page$/, async function () {
-  await loginPage.open();
+  await loginPage.menuBtn.click()
+  await loginPage.navToLogin.click()
+  await expect(await  loginPage.form).toBeExisting();
 });
 
 Then(/^the user will see a sign in form$/, async function () {
-  await expect(await await loginPage.form).toBeExisting();
+  await expect(await loginPage.form).toBeExisting();
 });
 
 Then(
@@ -248,16 +251,16 @@ Then(
 */
 
 Given(/^the user has filled the sign in form validly$/, async function () {
-  await loginPage.login(validEmail, validPassword);
+  await loginPage.loginThisPage(validEmail, validPassword);
 });
 
 When(/^the user submit a sign in form$/, async function () {
   await loginPage.btnSubmit.click();
 });
 
-// Then(/^the user shall see a login success message$/, async function () {
-//   // await expect(await loginPage.getLoginSuccessMessage).toBeExisting();
-// });
+Then(/^the user shall see a login success message$/, async function () {
+  // await expect(await loginPage.successMessage).toBeExisting();
+});
 
 Then(/^the user shall be redirected to home page$/, async function () {
   await browser.url("/");
@@ -270,12 +273,13 @@ Then(/^the user shall be redirected to home page$/, async function () {
 Given(
   /^the user has filled \"([^\"]*)\" input by inputting violated inputs$/,
   async function (expectedValue) {
-    await loginPage.login(expectedValue, expectedValue);
+    await $(await `input[name='${expectedValue}']`).setValue("a");
+    await $(await `input[name='${expectedValue}']`).setValue("");  
   }
 );
 
 Then(
-  /^the user will see a \"([^\"]*)\" message in login page$/,
+  /^the user shall see a \"([^\"]*)\" message for invalid inputs$/,
   async function (expectedValue) {
     await expect(loginPage.loginErrorMessages[0]).toHaveText(expectedValue);
   }
