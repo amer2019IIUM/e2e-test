@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "types": [
+      "node",
+      "webdriverio/async",
+      "@wdio/cucumber-framework",
+      "expect-webdriverio",
+      "@cucumber/cucumber"
+    ],
+    "target": "es2019"
+  }
+}
