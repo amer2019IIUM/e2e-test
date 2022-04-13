@@ -1,6 +1,7 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 import competitionPage from "../../pageObjects/competition.page";
 import profilePage from "../../pageObjects/profile.page";
+const assert = require("assert");
 
 /*
     Scenario: A user can see the competition page with questions
@@ -243,6 +244,24 @@ When(/^the user clicks on start competition$/, async function () {
 
 Then(/^the user will be redirected to a competition page$/, async function () {
   await expect(await competitionPage.isQuizPageExist).toBeExisting();
+});
+
+/*
+    Scenario: User participation details
+*/
+
+// Then(
+//   /^the user will see the button of starting the Competition$/,
+//   async function () {
+//     await expect(await competitionPage.homeQuizBtn).toBeExisting();
+//   }
+// );
+
+Then(/^the user will see (.+)$/, async function (widgets: string) {
+  const itemsList = widgets.split(",");
+  expect(await competitionPage.quizJoinsNumber).toHaveAttribute(itemsList[0], 'true')
+  expect(await competitionPage.quizLastResult).toHaveAttribute(itemsList[1], 'true')
+  expect(await competitionPage.quizWinsNumber).toHaveAttribute(itemsList[2], 'true')
 });
 
 /*

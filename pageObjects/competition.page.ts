@@ -25,8 +25,8 @@ class CompetitionPage extends Page {
   get unansweredQuestionHeighted() {
     return $$(".data-sut-not-answered")[0];
   }
-  get radioInputs(){
-    return this.form.$$("input[data-sut-select-answer-input='true'")
+  get radioInputs() {
+    return this.form.$$("input[data-sut-select-answer-input='true'");
   }
   get profileModalForm() {
     return $("form[data-sut-profile-form='true']");
@@ -44,6 +44,15 @@ class CompetitionPage extends Page {
   }
   get isQuizPageExist() {
     return $("div[data-sut-quiz-page='true']");
+  }
+  get quizJoinsNumber() {
+    return $("div[data-joins-number-quiz='true']");
+  }
+  get quizLastResult() {
+    return $("div[data-last-result-quiz='true']");
+  }
+  get quizWinsNumber() {
+    return $("div[data-number-wins-quiz='true']");
   }
   get loginNav() {
     return $("a[href='/login']");
