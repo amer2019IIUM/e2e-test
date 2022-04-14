@@ -1,8 +1,6 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 import profilePage from "../../pageObjects/profile.page";
-import { API_URL } from "../../src/config/urls";
-import { axiosGet } from "../../src/lib/helpers";
-import { invalidNameInput } from "../../src/lib/variables";
+import { invalidNameInput, invalidTelInput } from "../../src/lib/variables";
 const assert = require("assert");
 
 /*
@@ -15,8 +13,6 @@ Given(/^the user is on the profile page$/, async function () {
 
 Then(/^the user will see a update profile form$/, async function () {
   // await expect(await profilePage.form).toBeExisting();
-  const data = await axiosGet(`${API_URL}right-answers`);
-  await assert.equal(await data, false);
   await new Promise((resolve, reject) => {
     setTimeout(resolve, 10000);
   });
@@ -66,13 +62,30 @@ Then(
 
 Given(
   /^the user has not filled \"([^\"]*)\" input in the update profile form$/,
-  async function (expectedValue) {}
+  async function (expectedValue) {
+    await expect(await profilePage.form).toBeExisting();
+    await profilePage.updateProfileInvalidly(expectedValue);
+  }
 );
 
 Then(
-  /^the user will see a \"([^\"]*)\" message on the update profile form$/,
+  /^the user will see a \"([^\"]*)\" message of invalid inputting update form inputs fields$/,
   async function (expectedValue) {
     await expect(await $("span=هذا الحقل مطلوب")).toHaveText(expectedValue);
+  }
+);
+
+/*
+    Scenario Outline: Update Profile with with a very large phone number
+*/
+
+Given(
+  /^the user has not filled \"([^\"]*)\" input with more than 399 number in update profile form$/,
+  async function (expectedValue) {
+    await expect(await profilePage.form).toBeExisting();
+    await $(await profilePage.inputNameProperty(expectedValue)).setValue(
+      invalidTelInput
+    );
   }
 );
 
@@ -88,7 +101,7 @@ Given(
 );
 
 Then(
-  /^the user will see a \"([^\"]*)\" that comes from the system$/,
+  /^the user shall see a \"([^\"]*)\" message that comes from the system in the profile page$/,
   async function (expectedValue) {
     await expect(await profilePage.errorMessage).toHaveText(expectedValue);
   }

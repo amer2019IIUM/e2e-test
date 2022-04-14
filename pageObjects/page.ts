@@ -43,4 +43,11 @@ export default class Page {
   get errorMessage() {
     return $(".data-sut-toaster-error");
   }
+
+  /*
+  Shared functions
+  */
+  inputNameProperty(name:string) {
+    return $(`input[name=${name}]`);
+  }
 }

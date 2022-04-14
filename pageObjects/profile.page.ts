@@ -1,9 +1,11 @@
+import { invalidTelInput } from "../src/lib/variables";
 import Page from "./page";
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
 class ProfilePage extends Page {
+  // Selectors
   get navToProfile() {
     return $("span=الملف الشخصي");
   }
@@ -23,6 +25,12 @@ class ProfilePage extends Page {
   get updateProfileBtn() {
     return $("button[data-sut-update-profile-btn='true']");
   }
+
+  get errorMessages() {
+    return $("form").$$("span");
+  }
+
+  // Form inputs
   async updateProfile(name: string, country: string, phoneNo: number) {
     await this.nameInput.setValue(name);
     const countryInput = await this.countrySelectInput;
@@ -35,14 +43,21 @@ class ProfilePage extends Page {
     countryList.click();
     await this.numberInput.setValue(phoneNo);
   }
+  async updateProfileInvalidly(inputName) {
+    if (inputName === "country") {
+      await this.updateProfile("Amori", "", 12487);
+      await expect(await this.updateProfileBtn).toBeExisting();
+      await this.updateProfileBtn.click();
+    } else {
+      await $(await this.inputNameProperty(inputName)).setValue('a');
+      await $(await this.inputNameProperty(inputName)).setValue('');
+    }
+  }
 
   async violatedUpdate(name: string) {
-    await $("input[name='name']").setValue(name);
+    await $(await this.inputNameProperty("name")).setValue(name);
   }
 
-  get errorMessages() {
-    return $("form").$$("span");
-  }
   open() {
     return super.open("/profile");
   }
