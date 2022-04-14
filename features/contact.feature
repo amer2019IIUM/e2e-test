@@ -22,3 +22,7 @@ Feature: Contact page
     Examples:
       | input-field                | error-message   |
       | name,email,subject,message | هذا الحقل مطلوب |
+
+  # Scenario: Send a message with invalid email
+  #   Given the user has filled an invalid email input in the contact form
+  #   Then the user will see a error message of incorrect email format in contact form

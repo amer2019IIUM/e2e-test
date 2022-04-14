@@ -1,7 +1,6 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 import profilePage from "../../pageObjects/profile.page";
 import { invalidNameInput, invalidTelInput } from "../../src/lib/variables";
-const assert = require("assert");
 
 /*
     Scenario: Profile Page

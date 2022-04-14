@@ -90,10 +90,9 @@ Feature: Competition
     Given the user is authenticated
     And the user is on the home page
     Then the user will see the button of starting the Competition
-    Then the user will see <circle-widgets>
-    Examples:
-      | circle-widgets                                                     |
-      | data-joins-number-quiz,data-last-result-quiz,data-number-wins-quiz |
+    Then the user will see his number of wins
+    Then the user will see his last result
+    Then the user will see his number of attempts
 
 # Scenario: access competition but not authenticated
 #   Given the user is unauthenticated

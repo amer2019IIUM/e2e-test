@@ -250,18 +250,22 @@ Then(/^the user will be redirected to a competition page$/, async function () {
     Scenario: User participation details
 */
 
-// Then(
-//   /^the user will see the button of starting the Competition$/,
-//   async function () {
-//     await expect(await competitionPage.homeQuizBtn).toBeExisting();
-//   }
-// );
+Then(
+  /^the user will see the button of starting the Competition$/,
+  async function () {
+    await expect(await competitionPage.homeQuizBtn).toBeExisting();
+  }
+);
+Then(/^the user will see his number of wins$/, async function () {
+  await expect(await competitionPage.quizWinsNumber).toBeExisting();
+});
 
-Then(/^the user will see (.+)$/, async function (widgets: string) {
-  const itemsList = widgets.split(",");
-  expect(await competitionPage.quizJoinsNumber).toHaveAttribute(itemsList[0], 'true')
-  expect(await competitionPage.quizLastResult).toHaveAttribute(itemsList[1], 'true')
-  expect(await competitionPage.quizWinsNumber).toHaveAttribute(itemsList[2], 'true')
+Then(/^the user will see his last result$/, async function () {
+  await expect(await competitionPage.quizLastResult).toBeExisting();
+});
+
+Then(/^the user will see his number of attempts$/, async function () {
+  await expect(await competitionPage.quizJoinsNumber).toBeExisting();
 });
 
 /*
@@ -270,12 +274,4 @@ Then(/^the user will see (.+)$/, async function (widgets: string) {
 
 Given(/^the users accessed the competition page$/, function () {
   browser.url("quiz");
-});
-
-Then(/^the user will be redirected to the login page$/, async function () {
-  await expect(await competitionPage.menuBtn).toBeExisting();
-  await competitionPage.menuBtn.click();
-  await expect(await competitionPage.loginNav).toBeExisting();
-  await competitionPage.loginNav.click();
-  await expect(await competitionPage.form).toBeExisting();
 });
