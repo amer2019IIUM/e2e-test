@@ -5,6 +5,7 @@ import contactPage from "../../pageObjects/contact.page";
 Background Given
 */
 Given(/^the user is on the contact page$/, async function () {
+  browser.url("/");
   await contactPage.menuBtn.click();
   await contactPage.navToContact.click();
 });
@@ -63,15 +64,9 @@ Then(/^the user shall see a successful sending message$/, async function () {
 Scenario Outline :  Send a message with invalid inputs
 */
 Given(
-  /^the user has filled \"([^\"]*)\" input in the contact form$/,
-  async function (expectedValues) {
-    const itemsList = expectedValues.split(",");
-    await contactPage.submitFormInvalidly(
-      itemsList[0],
-      itemsList[1],
-      itemsList[2],
-      itemsList[3]
-    );
+  /^the user has left \"([^\"]*)\" input in the contact form empty$/,
+  async function (inputName) {
+    await contactPage.leftInputEmpty(inputName);
   }
 );
 
@@ -79,5 +74,23 @@ Then(
   /^the user will see a \"([^\"]*)\" message in contact page$/,
   async function (expectedValue: string) {
     await expect(contactPage.contactErrorMessages[0]).toHaveText(expectedValue);
+  }
+);
+
+/*
+Scenario Outline :  Send a message with invalid email
+*/
+
+Given(
+  /^the user has filled an invalid email input in the contact form$/,
+  async function () {
+    await contactPage.invalidEmail();
+  }
+);
+
+Then(
+  /^the user will see a error message of incorrect email format in contact form$/,
+  async function () {
+    await expect(contactPage.invalidEmailMessage).toBeExisting()
   }
 );

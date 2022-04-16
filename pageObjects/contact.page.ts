@@ -27,23 +27,24 @@ class ContactPage extends Page {
     await this.formInputs[2].setValue(subject);
     await this.messageInput.setValue(message);
   }
-  async submitFormInvalidly(
-    name: string,
-    email: string,
-    subject: string,
-    message: string
-  ) {
-    await $(`input[name='${name}']`).setValue("");
-    await $(`input[name='${email}']`).setValue("");
-    await $(`input[name='${subject}']`).setValue("");
-    await $(`textarea[name='${message}']`).setValue("");
+  async leftInputEmpty(nameValue: string) {
+    if (nameValue === "message") {
+      await $(`textarea[name='${nameValue}']`).setValue("a");
+      await $(`textarea[name='${nameValue}']`).setValue("");
+    } else {
+      await $(`input[name='${nameValue}']`).setValue("a");
+      await $(`input[name='${nameValue}']`).setValue("");
+    }
   }
-  get getSubmitMessage() {
-    return $(".go3958317564");
+  async invalidEmail() {
+    await $(`input[name='email']`).setValue("amer12");
   }
 
   get contactErrorMessages() {
-    return $("form").$$("span");
+    return $("form").$$("span=هذا الحقل مطلوب");
+  }
+  get invalidEmailMessage() {
+    return $("span=البريد الألكتروني غير صحيح");
   }
 
   open(path) {
