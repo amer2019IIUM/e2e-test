@@ -34,6 +34,18 @@ export default class Page {
     return $("img[data-sut-menu-svg-button='true']");
   }
 
+
+
+  /*
+  Shared functions
+  */
+  inputNameProperty(name: string) {
+    return $(`input[name=${name}]`);
+  }
+
+  /*
+   Messages
+  */
   // Get Toaster with success message
   get successMessage() {
     return $(".data-sut-toaster-success");
@@ -43,11 +55,11 @@ export default class Page {
   get errorMessage() {
     return $(".data-sut-toaster-error");
   }
-
-  /*
-  Shared functions
-  */
-  inputNameProperty(name:string) {
-    return $(`input[name=${name}]`);
+  
+  get emptyFieldErrorMessages() {
+    return $("form").$$("span=هذا الحقل مطلوب");
+  }
+  get invalidEmailMessage() {
+    return $("span=البريد الألكتروني غير صحيح");
   }
 }

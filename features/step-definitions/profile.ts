@@ -56,11 +56,11 @@ Then(
 );
 
 /*
-     Scenario: Update Profile with invalid inputs
+     Scenario: left inputs field empty in the profile form that has been updated before
 */
 
 Given(
-  /^the user has not filled \"([^\"]*)\" input in the update profile form$/,
+  /^the user has left \"([^\"]*)\" input empty in the update profile form$/,
   async function (expectedValue) {
     await expect(await profilePage.form).toBeExisting();
     await profilePage.updateProfileInvalidly(expectedValue);
@@ -68,9 +68,11 @@ Given(
 );
 
 Then(
-  /^the user will see a \"([^\"]*)\" message of invalid inputting update form inputs fields$/,
+  /^the user will see a \"([^\"]*)\" message of empty inputs$/,
   async function (expectedValue) {
-    await expect(await $("span=هذا الحقل مطلوب")).toHaveText(expectedValue);
+    await expect(profilePage.emptyFieldErrorMessages[0]).toHaveText(
+      expectedValue
+    );
   }
 );
 
@@ -79,12 +81,18 @@ Then(
 */
 
 Given(
-  /^the user has not filled \"([^\"]*)\" input with more than 399 number in update profile form$/,
-  async function (expectedValue) {
+  /^the user has filled phone number input field with more than 399 number in update profile form$/,
+  async function () {
     await expect(await profilePage.form).toBeExisting();
-    await $(await profilePage.inputNameProperty(expectedValue)).setValue(
+    await $(await profilePage.inputNameProperty("tel")).setValue(
       invalidTelInput
     );
+  }
+);
+Then(
+  /^the user will see a message that tells the input field is required$/,
+  async function () {
+    await expect(await profilePage.emptyFieldErrorMessages[0]).toBeExisting();
   }
 );
 
@@ -93,16 +101,16 @@ Given(
 */
 
 Given(
-  /^the user violated a \"([^\"]*)\" rule$/,
-  async function (expectedValue) {
+  /^the user has inputted more than one 255 characters in the name input field$/,
+  async function () {
     await profilePage.violatedUpdate(invalidNameInput);
   }
 );
 
 Then(
-  /^the user shall see a \"([^\"]*)\" message that comes from the system in the profile page$/,
-  async function (expectedValue) {
-    await expect(await profilePage.errorMessage).toHaveText(expectedValue);
+  /^the user shall see a error message of max 255 characters that comes from the system$/,
+  async function () {
+    await expect(await profilePage.errorMessage).toBeExisting();
   }
 );
 

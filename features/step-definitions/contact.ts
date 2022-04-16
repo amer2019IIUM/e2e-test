@@ -73,7 +73,7 @@ Given(
 Then(
   /^the user will see a \"([^\"]*)\" message in contact page$/,
   async function (expectedValue: string) {
-    await expect(contactPage.contactErrorMessages[0]).toHaveText(expectedValue);
+    await expect(contactPage.emptyFieldErrorMessages[0]).toHaveText(expectedValue);
   }
 );
 

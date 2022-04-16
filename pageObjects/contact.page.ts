@@ -40,13 +40,6 @@ class ContactPage extends Page {
     await $(`input[name='email']`).setValue("amer12");
   }
 
-  get contactErrorMessages() {
-    return $("form").$$("span=هذا الحقل مطلوب");
-  }
-  get invalidEmailMessage() {
-    return $("span=البريد الألكتروني غير صحيح");
-  }
-
   open(path) {
     return super.open(path);
   }
