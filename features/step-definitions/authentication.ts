@@ -2,7 +2,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import loginPage from "../../pageObjects/login.page";
 import signupPage from "../../pageObjects/signup.page";
 import homePage from "../../pageObjects/home.page";
-require('dotenv').config();
+require("dotenv").config();
 import {
   validEmail,
   validPassword,
@@ -21,7 +21,6 @@ Given(/^the user is on the sign up page$/, async function () {
 Given(/^the user is not authenticated$/, async function () {
   browser.url("/logout");
   await expect(await $("a[href='/login']")).toBeExisting();
-
 });
 
 Then(/^the user shall see a sign up form$/, async function () {
@@ -159,7 +158,7 @@ Then(
 Given(/^the user has inputted the activation link in the url$/, function () {});
 
 When(/^the user presses enter$/, async function () {
-  await browser.keys("Enter")
+  await browser.keys("Enter");
 });
 
 Then(/^the account will be activated$/, function () {});
@@ -184,7 +183,7 @@ Then(/^the user will be able to navigate to sign in page$/, async function () {
 */
 
 Given(/^the user is authenticated$/, async function () {
-  await loginPage.login(process.env.VALID_EMAIL,process.env.VALID_PASSWORD)
+  await loginPage.login(process.env.VALID_EMAIL, process.env.VALID_PASSWORD);
   await expect(await $("a[href='/logout']")).toBeExisting();
 });
 
@@ -202,9 +201,9 @@ Then(
 */
 
 Given(/^the user is on the sign in page$/, async function () {
-  await loginPage.menuBtn.click()
-  await loginPage.navToLogin.click()
-  await expect(await  loginPage.form).toBeExisting();
+  await loginPage.menuBtn.click();
+  await loginPage.navToLogin.click();
+  await expect(await loginPage.form).toBeExisting();
 });
 
 Then(/^the user will see a sign in form$/, async function () {
@@ -267,21 +266,22 @@ Then(/^the user shall be redirected to home page$/, async function () {
 });
 
 /*
-    Scenario Outline: sign in with invalid inputs
+    Scenario Outline: sign in with empty inputs
 */
 
 Given(
-  /^the user has filled \"([^\"]*)\" input by inputting violated inputs$/,
+  /^the user has left \"([^\"]*)\" input empty$/,
   async function (expectedValue) {
-    await $(await `input[name='${expectedValue}']`).setValue("a");
-    await $(await `input[name='${expectedValue}']`).setValue("");  
+    await signupPage.emptyFields(expectedValue);
   }
 );
 
 Then(
-  /^the user shall see a \"([^\"]*)\" message for invalid inputs$/,
+  /^the user shall see a \"([^\"]*)\" message for empty inputs$/,
   async function (expectedValue) {
-    await expect(loginPage.loginErrorMessages[0]).toHaveText(expectedValue);
+    await expect(loginPage.emptyFieldErrorMessages[0]).toHaveText(
+      expectedValue
+    );
   }
 );
 
@@ -301,19 +301,16 @@ Given(/^the user has not activated the account$/, function () {});
 Then(
   /^the user will be informed that his account not activated yet$/,
   async function () {
-    await expect(loginPage.errorUnactivatedAccount).toBeExisting();
+    await expect(loginPage.errorMessage).toBeExisting();
   }
 );
 
 /*
     Scenario : Invalid credentials account login
 */
-Given(
-  /^the user inputted invalid input-fields login credentials$/,
-  async function () {
-    await loginPage.login(wrongEmail, validPassword);
-  }
-);
+Given(/^the user inputted invalid credentials$/, async function () {
+  await loginPage.login(wrongEmail, validPassword);
+});
 
 Then(
   /^the user will be informed that the credentials do not match our records.$/,
@@ -352,3 +349,21 @@ Given(
 );
 
 Then(/^the user will logout from the website$/, function () {});
+
+/*
+    Scenario : logout in sign in page
+*/
+
+Given(/^the user accessed the sign in page$/, async function () {
+  await loginPage.open();
+});
+
+Then(/^the user will see a logout button$/, async function () {
+  await expect(loginPage.logoutBtn).toBeExisting();
+});
+Then(
+  /^the user will be able to click a logout button to logout$/,
+  async function () {
+    await loginPage.logoutBtn.click();
+  }
+);

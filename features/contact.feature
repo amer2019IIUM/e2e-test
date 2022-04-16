@@ -27,5 +27,5 @@ Feature: Contact page
       | message     | هذا الحقل مطلوب |
 
   Scenario: Send a message with invalid email
-    Given the user has filled an invalid email input in the contact form
-    Then the user will see a error message of incorrect email format in contact form
+    Given the user has filled an invalid email input
+    Then the user will see a error message of incorrect email format

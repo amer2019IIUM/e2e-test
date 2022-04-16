@@ -34,8 +34,6 @@ export default class Page {
     return $("img[data-sut-menu-svg-button='true']");
   }
 
-
-
   /*
   Shared functions
   */
@@ -43,6 +41,10 @@ export default class Page {
     return $(`input[name=${name}]`);
   }
 
+  async emptyFields(inputName) {
+    await $(await this.inputNameProperty(inputName)).setValue("a");
+    await $(await this.inputNameProperty(inputName)).setValue("");
+  }
   /*
    Messages
   */
@@ -55,7 +57,7 @@ export default class Page {
   get errorMessage() {
     return $(".data-sut-toaster-error");
   }
-  
+
   get emptyFieldErrorMessages() {
     return $("form").$$("span=هذا الحقل مطلوب");
   }

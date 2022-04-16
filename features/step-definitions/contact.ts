@@ -82,14 +82,14 @@ Scenario Outline :  Send a message with invalid email
 */
 
 Given(
-  /^the user has filled an invalid email input in the contact form$/,
+  /^the user has filled an invalid email input$/,
   async function () {
     await contactPage.invalidEmail();
   }
 );
 
 Then(
-  /^the user will see a error message of incorrect email format in contact form$/,
+  /^the user will see a error message of incorrect email format$/,
   async function () {
     await expect(contactPage.invalidEmailMessage).toBeExisting()
   }
