@@ -20,12 +20,7 @@ export default class Page {
   get formInputs() {
     return $("form").$$("input");
   }
-
-  // Get email
-  get email() {
-    return $("input[name='email']");
-  }
-
+ 
   // Get form submit button
   get btnSubmit() {
     return $("button[type=submit]");
@@ -55,7 +50,7 @@ export default class Page {
     }
     //
     else if (inputName === "email" && validityRule === "email") {
-      $("span=البريد الألكتروني غير صحيح");
+      await this.inputNameProperty(inputName).setValue("amer23");
     }
     //
     else if (
@@ -71,6 +66,9 @@ export default class Page {
       });
       await countryInput.setValue("");
       await this.btnSubmit.click();
+    } else if (inputName === "message" && validityRule === "required") {
+      await $(`textarea[name=${inputName}]`).setValue("a");
+      await $(`textarea[name=${inputName}]`).setValue("");
     }
     //
     else if (inputName === "tel" && validityRule === "required") {
@@ -79,6 +77,7 @@ export default class Page {
     }
     //
     else {
+      await this.inputNameProperty(inputName).setValue("a");
       await this.inputNameProperty(inputName).setValue("");
     }
   }

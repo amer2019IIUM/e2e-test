@@ -49,8 +49,8 @@ export const config: Options.Testrunner = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  
-  specs: ["./features/**/profile.feature"],
+
+  specs: ["./features/**/contact.feature"],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'

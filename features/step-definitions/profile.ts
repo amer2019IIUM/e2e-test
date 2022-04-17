@@ -20,11 +20,7 @@ Then(/^the user will see a update profile form$/, async function () {
 /*
     Scenario: Update Profile form successfullly
 */
-Given(/^the user filled the name input$/, async function () {
-  await profilePage.nameInput.setValue("amer");
-});
-
-Given(/^the user filled the country$/, async function () {
+Given(/^the user filled the country input$/, async function () {
   await profilePage.selectCountry();
 });
 
@@ -35,84 +31,13 @@ Given(
   }
 );
 
-When(/^the user submits the update profile form$/, async function () {
-  await expect(await profilePage.updateProfileBtn).toBeExisting();
-  await profilePage.updateProfileBtn.click();
-});
-
-Then(
-  /^the user will a successfull message of updating profile$/,
-  async function () {
-    await expect(await profilePage.successMessage).toBeExisting();
-  }
-);
-
 /*
      Scenario Outline: Update Profile form with invalid inputs
 */
-
-Given(
-  /^the user violated a \"([^\"]*)\" rule for \"([^\"]*)\" input$/,
-  async function (validityRule, inputName) {
-    await profilePage.violatedInputs(validityRule, inputName);
-  }
-);
-
-Then(
-  /^the user will see a \"([^\"]*)\" message because of \"([^\"]*)\" rule$/,
-  async function (message, validityRule) {
-    await expect(
-      await profilePage.violatedMessage(validityRule)
-    ).toBeExisting();
-    await expect(await profilePage.violatedMessage(validityRule)).toHaveText(
-      message
-    );
-  }
-);
+//  All steps in the sharedSteps.ts file //
 
 /*
-     Scenario: left inputs field empty in the profile form that has been updated before
-*/
-
-Given(
-  /^the user has left \"([^\"]*)\" input empty in the update profile form$/,
-  async function (expectedValue) {
-    await expect(await profilePage.form).toBeExisting();
-    await profilePage.updateProfileInvalidly(expectedValue);
-  }
-);
-
-Then(
-  /^the user will see a \"([^\"]*)\" message of empty inputs$/,
-  async function (expectedValue) {
-    await expect(profilePage.emptyFieldErrorMessages[0]).toHaveText(
-      expectedValue
-    );
-  }
-);
-
-/*
-    Scenario Outline: Update Profile with with a very large phone number
-*/
-
-Given(
-  /^the user has filled phone number input field with more than 399 number in update profile form$/,
-  async function () {
-    await expect(await profilePage.form).toBeExisting();
-    await $(await profilePage.inputNameProperty("tel")).setValue(
-      invalidTelInput
-    );
-  }
-);
-Then(
-  /^the user will see a message that tells the input field is required$/,
-  async function () {
-    await expect(await profilePage.emptyFieldErrorMessages[0]).toBeExisting();
-  }
-);
-
-/*
-    Scenario: Update Profile with invalid inputs and submit to the system
+    Scenario: Update Profile with invalid input of the name and submit to the system
 */
 
 Given(

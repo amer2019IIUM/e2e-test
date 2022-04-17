@@ -4,28 +4,36 @@ Feature: Contact page
 
   Scenario: Contact page
     Then the user will see a contact us form
-    Then the user will be able to input his full name
-    Then the user will be able to input his email
-    Then the user will be able to input the subject of his message
-    Then the user will be able to input the message
-    Then the user will be able to submit the form
 
   Scenario: Send a message successfully
-    Given the user has filled the contact us form validly
-    When the user submits the contact form
-    Then the user shall see a successful sending message
+    Given the user filled the name input
+    And the user filled the email input with correct email only
+    And the user filled the subject input
+    And the user filled the message input
+    When the user submits the form
+    Then the user will a successfull message
 
-  Scenario Outline: empty input
-    Given the user has left "<input-field>" input in the contact form empty
-    Then the user will see a "<error-message>" message in contact page
+  Scenario Outline: Send a message with invalid inputs
+    Given the user is on the contact page
+    And the user violated a "<validity-rule>" rule for "<input-field>" input
+    Then the user will see a "<error-message>" message because of "<validity-rule>" rule
 
     Examples:
-      | input-field | error-message   |
-      | name        | هذا الحقل مطلوب |
-      | email       | هذا الحقل مطلوب |
-      | subject     | هذا الحقل مطلوب |
-      | message     | هذا الحقل مطلوب |
+      | input-field | validity-rule | error-message              |
+      | name        | required      | هذا الحقل مطلوب            |
+      | email       | required      | هذا الحقل مطلوب            |
+      | email       | email         | البريد الألكتروني غير صحيح |
+      | subject     | required      | هذا الحقل مطلوب            |
+      | message     | required      | هذا الحقل مطلوب            |
 
-  Scenario: Send a message with invalid email
-    Given the user has filled an invalid email input
-    Then the user will see a error message of incorrect email format
+  Scenario Outline: send a message with invalid inputs and submit to the system
+    Given the user is on the contact page
+    And the user has inputted more than 255 characters in the "<input-field>" input field
+    When the user submits the form
+    Then the user shall see "<error-message>" that comes from the system
+    Examples:
+
+      | input-field | error-message               |
+      | name        | The given data was invalid. |
+      | email       | The given data was invalid. |
+      | subject     | The given data was invalid. |

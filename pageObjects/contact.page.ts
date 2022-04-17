@@ -1,3 +1,4 @@
+import { invalidLengthInput } from "../src/lib/variables";
 import Page from "./page";
 
 /**
@@ -40,6 +41,24 @@ class ContactPage extends Page {
     await $(`input[name='email']`).setValue("amer12");
   }
 
+  async inputFieldWithLargeCharacters(inputName: string) {
+    if (inputName === "name") {
+      await this.inputNameProperty("name").setValue(invalidLengthInput);
+      await this.inputNameProperty("email").setValue("test@gmail.com");
+      await this.inputNameProperty("subject").setValue("test");
+      await this.messageInput.setValue("testing Message.");
+    } else if (inputName === "email") {
+      await this.inputNameProperty("name").setValue("amer");
+      await this.inputNameProperty("email").setValue(invalidLengthInput);
+      await this.inputNameProperty("subject").setValue("test");
+      await this.messageInput.setValue("testing Message.");
+    } else if (inputName === "subject") {
+      await this.inputNameProperty("name").setValue("Amer");
+      await this.inputNameProperty("email").setValue("test@gmail.com");
+      await this.inputNameProperty("subject").setValue(invalidLengthInput);
+      await this.messageInput.setValue("testing Message.");
+    }
+  }
   open(path) {
     return super.open(path);
   }
