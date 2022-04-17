@@ -7,21 +7,22 @@ class SignupPage extends Page {
   /**
    * define selectors using getter methods
    */
+   get navToSignup() {
+    return $("a[href='/signup']");
+  }
   get form() {
     return $("form");
   }
-  get signupInputs() {
-    return $("form").$$("input");
-  }
+
 
   async submitForm(
     email: string,
     password: string,
     password_confirmation: string
   ) {
-    await this.signupInputs[0].setValue(email);
-    await this.signupInputs[1].setValue(password);
-    await this.signupInputs[2].setValue(password_confirmation);
+    await this.formInputs[0].setValue(email);
+    await this.formInputs[1].setValue(password);
+    await this.formInputs[2].setValue(password_confirmation);
   }
 
   get getSubmitMessage() {

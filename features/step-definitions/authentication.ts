@@ -13,14 +13,16 @@ import {
 /*
     Scenario: Sign up page
 */
-Given(/^the user is on the sign up page$/, async function () {
-  await signupPage.open();
-  await browser.maximizeWindow();
-});
 
 Given(/^the user is not authenticated$/, async function () {
   browser.url("/logout");
   await expect(await $("a[href='/login']")).toBeExisting();
+});
+
+Given(/^the user is on the sign up page$/, async function () {
+  await loginPage.menuBtn.click();
+  await signupPage.navToSignup.click();
+  await expect(await signupPage.form).toBeExisting();
 });
 
 Then(/^the user shall see a sign up form$/, async function () {
@@ -28,17 +30,17 @@ Then(/^the user shall see a sign up form$/, async function () {
 });
 
 Then(/^the user shall be able to input his email$/, async function () {
-  await expect(await signupPage.signupInputs[0]).toHaveAttr("name", "email");
+  await expect(await signupPage.formInputs[0]).toHaveAttr("name", "email");
 });
 
 Then(/^the user shall be able to input his password$/, async function () {
-  await expect(await signupPage.signupInputs[1]).toHaveAttr("name", "password");
+  await expect(await signupPage.formInputs[1]).toHaveAttr("name", "password");
 });
 
 Then(
   /^the user shall be able to input confirmation of his password$/,
   async function () {
-    await expect(await signupPage.signupInputs[2]).toHaveAttr(
+    await expect(await signupPage.formInputs[2]).toHaveAttr(
       "name",
       "password_confirmation"
     );
@@ -97,7 +99,7 @@ Then(
 Then(/^the user will recieve an activate link to his email$/, function () {});
 
 /*
-    Scenario: submit sign up form without inputting the fields
+    Scenario: let the field empty
 
 */
 
