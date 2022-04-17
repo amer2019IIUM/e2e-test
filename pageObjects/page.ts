@@ -1,3 +1,5 @@
+import { invalidTelInput } from "../src/lib/variables";
+
 export default class Page {
   /**
    * Opens a sub page of the page
@@ -44,6 +46,53 @@ export default class Page {
   async emptyFields(inputName) {
     await $(await this.inputNameProperty(inputName)).setValue("a");
     await $(await this.inputNameProperty(inputName)).setValue("");
+  }
+
+  async violatedInputs(validityRule: string, inputName: string) {
+    if (inputName === "tel" && validityRule === "max 399") {
+      await this.inputNameProperty(inputName).setValue(6);
+      await this.inputNameProperty(inputName).setValue(invalidTelInput);
+    }
+    //
+    else if (inputName === "email" && validityRule === "email") {
+      $("span=البريد الألكتروني غير صحيح");
+    }
+    //
+    else if (
+      inputName === "password" &&
+      validityRule === "upper-lower-number charaters"
+    ) {
+      return "يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام";
+    } else if (inputName === "country" && validityRule === "required") {
+      const countryInput = await $("input[id='react-select-3-input']");
+      const countryList = await $("div[id='react-select-3-listbox']");
+      await new Promise((resolve, reject) => {
+        setTimeout(resolve, 2000);
+      });
+      await countryInput.setValue("");
+      await this.btnSubmit.click();
+    }
+    //
+    else if (inputName === "tel" && validityRule === "required") {
+      await this.inputNameProperty(inputName).setValue(15515565);
+      await this.inputNameProperty(inputName).setValue("");
+    }
+    //
+    else {
+      await this.inputNameProperty(inputName).setValue("");
+    }
+  }
+
+  violatedMessage(validityRule) {
+    if (validityRule === "max 399") {
+      return $("form").$$("span=هذا الحقل مطلوب")[0];
+    } else if (validityRule === "email") {
+      return $("span=البريد الألكتروني غير صحيح");
+    } else if (validityRule === "upper-lower-number charaters") {
+      return "يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام";
+    } else {
+      return $("form").$$("span=هذا الحقل مطلوب")[0];
+    }
   }
   /*
    Messages

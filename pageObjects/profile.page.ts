@@ -13,7 +13,7 @@ class ProfilePage extends Page {
   get nameInput() {
     return $("input[name='name']");
   }
-  get numberInput() {
+  get telephoneInput() {
     return $("input[name='tel']");
   }
   get countrySelectInput() {
@@ -41,21 +41,35 @@ class ProfilePage extends Page {
     countryInput.setValue(country);
     await browser.waitUntil(() => countryList.isClickable());
     countryList.click();
-    await this.numberInput.setValue(phoneNo);
+    await this.telephoneInput.setValue(phoneNo);
   }
+
+  async selectCountry() {
+    const countryInput = await this.countrySelectInput;
+    const countryList = await this.countrySelectList;
+    await new Promise((resolve, reject) => {
+      setTimeout(resolve, 2000);
+    });
+    countryInput.setValue("Yemen");
+    await browser.waitUntil(() => countryList.isClickable());
+    countryList.click();
+  }
+
   async updateProfileInvalidly(inputName) {
     if (inputName === "country") {
       await this.updateProfile("Amori", "", 12487);
       await expect(await this.updateProfileBtn).toBeExisting();
       await this.updateProfileBtn.click();
     } else {
-      await $(await this.inputNameProperty(inputName)).setValue('a');
-      await $(await this.inputNameProperty(inputName)).setValue('');
+      await $(await this.inputNameProperty(inputName)).setValue("a");
+      await $(await this.inputNameProperty(inputName)).setValue("");
     }
   }
 
   async violatedUpdate(name: string) {
     await $(await this.inputNameProperty("name")).setValue(name);
+    await this.selectCountry();
+    await $(await this.inputNameProperty("tel")).setValue(15212);
   }
 
   open() {

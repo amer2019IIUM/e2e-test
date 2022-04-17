@@ -17,31 +17,23 @@ Then(/^the user will see a update profile form$/, async function () {
   });
 });
 
-Then(/^the user will be able to update his name$/, async function () {
-  await expect(await profilePage.formInputs[0]).toBeExisting();
-});
-
-Then(/^the user will be able to update his country$/, async function () {
-  await expect(await profilePage.formInputs[1]).toBeExisting();
-});
-
-Then(/^the user will be able to update his phone number$/, async function () {
-  await expect(await profilePage.formInputs[2]).toBeExisting();
-});
-
-Then(
-  /^the user will be able to submit the updated profile form/,
-  async function () {
-    await expect(await profilePage.btnSubmit).toBeExisting();
-  }
-);
-
 /*
     Scenario: Update Profile form successfullly
 */
-Given(/^the user has filled the form validly$/, async function () {
-  await profilePage.updateProfile("Amori", "Yemen", 12487);
+Given(/^the user filled the name input$/, async function () {
+  await profilePage.nameInput.setValue("amer");
 });
+
+Given(/^the user filled the country$/, async function () {
+  await profilePage.selectCountry();
+});
+
+Given(
+  /^the user filled the phone number with numbers only$/,
+  async function () {
+    await profilePage.telephoneInput.setValue(112554);
+  }
+);
 
 When(/^the user submits the update profile form$/, async function () {
   await expect(await profilePage.updateProfileBtn).toBeExisting();
@@ -52,6 +44,29 @@ Then(
   /^the user will a successfull message of updating profile$/,
   async function () {
     await expect(await profilePage.successMessage).toBeExisting();
+  }
+);
+
+/*
+     Scenario Outline: Update Profile form with invalid inputs
+*/
+
+Given(
+  /^the user violated a \"([^\"]*)\" rule for \"([^\"]*)\" input$/,
+  async function (validityRule, inputName) {
+    await profilePage.violatedInputs(validityRule, inputName);
+  }
+);
+
+Then(
+  /^the user will see a \"([^\"]*)\" message because of \"([^\"]*)\" rule$/,
+  async function (message, validityRule) {
+    await expect(
+      await profilePage.violatedMessage(validityRule)
+    ).toBeExisting();
+    await expect(await profilePage.violatedMessage(validityRule)).toHaveText(
+      message
+    );
   }
 );
 
