@@ -1,5 +1,6 @@
 import { Given, Then, When } from "@wdio/cucumber-framework";
 import Page from "../../pageObjects/page";
+import { validEmail, validPassword } from "../../src/lib/variables";
 
 var sharedPage = new Page();
 
@@ -11,7 +12,14 @@ Given(/^the user filled the name input$/, async function () {
 Given(
   /^the user filled the email input with correct email only$/,
   async function () {
-    await sharedPage.inputNameProperty("email").setValue("test@gmail.com");
+    await sharedPage.inputNameProperty("email").setValue(validEmail);
+  }
+);
+
+Given(
+  /^the user filled the password input with correct password only$/,
+  async function () {
+    await sharedPage.inputNameProperty("password").setValue(validPassword);
   }
 );
 
