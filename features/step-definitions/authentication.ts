@@ -9,6 +9,8 @@ import {
   unactivatedEmail,
   wrongEmail,
   neverUsedEmail,
+  invalidNameInput,
+  invalidLengthInput,
 } from "../../src/lib/variables";
 
 /*
@@ -118,6 +120,17 @@ Then(
 );
 
 /*
+    Scenario: Sign up with large length email and submit to the system
+*/
+
+Given(
+  /^the user has inputted more than 255 characters in the email input field$/,
+  async function () {
+    await signupPage.inputNameProperty("email").setValue(invalidLengthInput);
+  }
+);
+
+/*
     Scenario: after the user registered successfully
 
 */
@@ -178,7 +191,7 @@ Given(/^the user accessed the sign up page$/, async function () {
 Then(
   /^the user will see a message that tells him he can start the competition$/,
   async function () {
-    await expect(await $("h5=اشترك الآن")).toBeExisting();
+    await expect(await $("h3[data-signup-page-message='true']")).toBeExisting();
   }
 );
 

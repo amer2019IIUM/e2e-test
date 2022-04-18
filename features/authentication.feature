@@ -25,31 +25,41 @@ Feature: Authentication
     #     Then the user will recieve an activate link to his email
 
 
-    Scenario Outline: sign up with invalid inputs
-        Given the user is not authenticated
-        And the user is on the sign up page
-        And the user violated a "<validity-rule>" rule for "<input-field>" input
-        Then the user will see a "<error-message>" message because of "<validity-rule>" rule
-        Examples:
-            | input-field           | validity-rule      | error-message                                 |
-            | email                 | required           | هذا الحقل مطلوب                               |
-            | password              | required           | هذا الحقل مطلوب                               |
-            | password_confirmation | required           | هذا الحقل مطلوب                               |
-            | email                 | email              | البريد الألكتروني غير صحيح                    |
-            | password              | minLength_8        | يجب أن تتألف كلمة السر من 8 محارف على الأقل   |
-            | password              | upper_lower_number | يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام |
-            | password_confirmation | match_password     | يجب أن تكون كلمة السر مطابقة                  |
+    # Scenario Outline: sign up with invalid inputs
+    #     Given the user is not authenticated
+    #     And the user is on the sign up page
+    #     And the user violated a "<validity-rule>" rule for "<input-field>" input
+    #     Then the user will see a "<error-message>" message because of "<validity-rule>" rule
+    #     Examples:
+    #         | input-field           | validity-rule      | error-message                                 |
+    #         | email                 | required           | هذا الحقل مطلوب                               |
+    #         | password              | required           | هذا الحقل مطلوب                               |
+    #         | password_confirmation | required           | هذا الحقل مطلوب                               |
+    #         | email                 | email              | البريد الألكتروني غير صحيح                    |
+    #         | password              | minLength_8        | يجب أن تتألف كلمة السر من 8 محارف على الأقل   |
+    #         | password              | upper_lower_number | يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام |
+    #         | password_confirmation | match_password     | يجب أن تكون كلمة السر مطابقة                  |
 
 
 
-# Scenario: sign up with used email
-#     Given the user is not authenticated
-#     And the user is on the sign up page
-#     And the user filled the email input with correct email that has been used before
-#     And the user filled the password input with correct format password
-#     And the user filled the confirmation password input that match the previous password
-#     When the user submits a form
-#     Then the user will see be informed that the email has been used before
+    # Scenario: sign up with used email
+    #     Given the user is not authenticated
+    #     And the user is on the sign up page
+    #     And the user filled the email input with correct email that has been used before
+    #     And the user filled the password input with correct format password
+    #     And the user filled the confirmation password input that match the previous password
+    #     When the user submits a form
+    #     Then the user will see be informed that the email has been used before
+
+
+    # Scenario: Sign up with large length email and submit to the system
+    #     Given the user is not authenticated
+    #     And the user is on the sign up page
+    #     And the user has inputted more than 255 characters in the email input field
+    #     And the user filled the password input with correct format password
+    #     And the user filled the confirmation password input that match the previous password
+    #     When the user submits a form
+    #     Then the user shall see a error message of max 255 characters that comes from the system
 
 # Scenario: after the user registered successfully
 #     Given  the user is on the register-succeeded page
