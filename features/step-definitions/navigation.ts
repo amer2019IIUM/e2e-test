@@ -8,12 +8,7 @@ const assert = require("assert");
 */
 
 Given(/^the user is on a page$/, async function () {
-  browser.url("contact");
-});
-
-Given(/^the user is unauthenticated$/, async function () {
-  browser.url("/logout");
-  expect(await navigationPage.menuBtn).toBeExisting();
+  await expect(await navigationPage.menuBtn).toBeExisting();
 });
 
 Then(/^the user will see the (.+) item$/, async function (navigationItems) {

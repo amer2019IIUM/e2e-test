@@ -95,6 +95,6 @@ Feature: Competition
     Then the user will see his number of attempts
 
 # Scenario: access competition but not authenticated
-#   Given the user is unauthenticated
+#   Given the user is not authenticated
 #   And the users accessed the competition page
 #   Then the user will be redirected to the login page

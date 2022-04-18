@@ -39,6 +39,6 @@ Feature: Profile
 
 
 # Scenario: access profile but not authenticated
-#     Given the user is unauthenticated
+#     Given the user is not authenticated
 #     And the user is accessed the profile page
 #     Then the user will be redirected to the login page

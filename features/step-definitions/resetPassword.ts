@@ -1,5 +1,6 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 import resetPasswordPage from "../../pageObjects/resetPassword.page";
+import { validEmail } from "../../src/lib/variables";
 
 /*
     Scenario: Forget-password page
@@ -26,21 +27,16 @@ Then(
 Given(/^the user accessed forgot-password page$/, async function () {
   resetPasswordPage.open();
 });
-
 Given(
-  /^the user has filled the forgot-password form validly$/,
+  /^the user filled the email input with the correct email that is existing the system$/,
   async function () {
-    // await resetPasswordPage.email.setValue("amer23zx@gmail.com");
+    await resetPasswordPage.inputNameProperty("email").setValue(validEmail);
   }
 );
-When(/^the user submits the reset password form$/, async function () {
-  await resetPasswordPage.btnSubmit.click();
-});
- 
 
 Then(
   /^the user should receive a message to his email with a link to reset the password$/,
-  function () {}
+  async function () {}
 );
 
 /*
@@ -48,9 +44,11 @@ Then(
 */
 
 Given(
-  /^the user has filled not his email input that is not exist in the system$/,
+  /^the user has filled his email input that is not exist in the system$/,
   async function () {
-    await resetPasswordPage.email.setValue("notexistemail@gmail.com");
+    await resetPasswordPage
+      .inputNameProperty("email")
+      .setValue("notexistemail@gmail.com");
   }
 );
 
@@ -86,7 +84,7 @@ Then(
     Scenario: The email has been sent
 */
 
-Given(/^the user has inputted the resetting link in the url$/, function () {
+Given(/^the user clicked on the resetting link$/, function () {
   browser.url("/password/reset/token");
 });
 
@@ -134,23 +132,9 @@ Then(
 // This given should have a valid token to let this scenario works
 Given(/^the user is on the new password page$/, function () {
   browser.url(
-    "/password/reset/10c8729e0d2af36ba88293dbafd63536a7f7a7e7d47f9c8fbaa421b4894ecda6?email=amergaber%40zadgroup.net"
+    "/password/reset/83c2dc0a67b71cc293d3754b98d85dcf4d15de7cebb0f9e03b3a472da2051c3f?email=amergaber%40zadgroup.net"
   );
 });
-
-Given(/^the user has filled the new password form validly$/, async function () {
-  await resetPasswordPage.formInputs[1].setValue("@Mm0114741");
-  await resetPasswordPage.formInputs[2].setValue("@Mm0114741");
-});
-
-When(/^the user submits the new password form$/, async function () {
-  await resetPasswordPage.btnSubmit.click();
-});
-
-Then(/^the user will see a message of success$/, async function () {
-  await expect(await resetPasswordPage.successfulResetting).toBeExisting();
-});
-
 Then(/^the user will see a button$/, async function () {
   await expect(await resetPasswordPage.loginLink).toBeExisting();
 });
@@ -165,24 +149,7 @@ Then(
 /*
     Scenario: Invalid new password inputs
 */
-
-Given(
-  /^the user has filled \"([^\"]*)\" input in the reset password page$/,
-  async function (expectedValues) {
-    const itemsList = expectedValues.split(",");
-    await $(`input[name='${itemsList[0]}']`).setValue("");
-    await $(`input[name='${itemsList[1]}']`).setValue("");
-  }
-);
-
-Then(
-  /^the user will see a \"([^\"]*)\" message in the reset password page$/,
-  async function (expectedValue: string) {
-    await expect(resetPasswordPage.resettingErrorMessages[1]).toHaveText(
-      expectedValue
-    );
-  }
-);
+//  All steps in the sharedSteps.ts file
 
 /*
     Scenario: token used before
