@@ -30,16 +30,13 @@ Given(/^the user accessed forgot-password page$/, async function () {
 Given(
   /^the user has filled the forgot-password form validly$/,
   async function () {
-    await resetPasswordPage.email.setValue("amer23zx@gmail.com");
+    // await resetPasswordPage.email.setValue("amer23zx@gmail.com");
   }
 );
 When(/^the user submits the reset password form$/, async function () {
   await resetPasswordPage.btnSubmit.click();
 });
-Then(
-  /^the user will see a successful message of sending a reset link to the email$/,
-  function () {}
-);
+ 
 
 Then(
   /^the user should receive a message to his email with a link to reset the password$/,

@@ -8,6 +8,7 @@ import {
   validPassword,
   unactivatedEmail,
   wrongEmail,
+  neverUsedEmail,
 } from "../../src/lib/variables";
 
 /*
@@ -29,28 +30,6 @@ Then(/^the user shall see a sign up form$/, async function () {
   await expect(await signupPage.form).toBeExisting();
 });
 
-Then(/^the user shall be able to input his email$/, async function () {
-  await expect(await signupPage.formInputs[0]).toHaveAttr("name", "email");
-});
-
-Then(/^the user shall be able to input his password$/, async function () {
-  await expect(await signupPage.formInputs[1]).toHaveAttr("name", "password");
-});
-
-Then(
-  /^the user shall be able to input confirmation of his password$/,
-  async function () {
-    await expect(await signupPage.formInputs[2]).toHaveAttr(
-      "name",
-      "password_confirmation"
-    );
-  }
-);
-
-Then(/^the user shall be able to submit the form$/, async function () {
-  await expect(await signupPage.btnSubmit).toBeExisting();
-});
-
 Then(
   /^the user shall be able to navigate to the terms and conditions page$/,
   async function () {
@@ -67,70 +46,75 @@ Then(/^the user shall be able to navigate to sign in page$/, async function () {
 
 */
 
-Given(/^the user has filled the sign up form validly$/, async function () {
-  await signupPage.submitForm(
-    "alisaelh@gmail.com",
-    "@Fv00110011",
-    "@Fv00110011"
-  );
-});
+Given(
+  /^the user filled the email input with correct email that never used before$/,
+  async function () {
+    await signupPage.inputNameProperty("email").setValue(neverUsedEmail);
+  }
+);
+
+Given(
+  /^the user filled the password input with correct format password$/,
+  async function () {
+    await signupPage.inputNameProperty("password").setValue(validPassword);
+  }
+);
+
+Given(
+  /^the user filled the confirmation password input that match the previous password$/,
+  async function () {
+    await signupPage
+      .inputNameProperty("password_confirmation")
+      .setValue(validPassword);
+  }
+);
 
 Given(/^the user verified the recaptcha$/, async function () {
   // await assertions.toBeExisting(await signupPage.reCAPTCHA);
 });
 
-When(/^the user submits a sign up form$/, async function () {
+When(/^the user submits a form$/, async function () {
   await signupPage.btnSubmit.click();
 });
 
-// Then(
-//   /^the user will see a success message of the registeration$/,
-//   async function () {
-//     // await assertions.toBeExisting(await signupPage.getSubmitMessage);
-//   }
-// );
+Then(
+  /^the user will see a success message of the registeration$/,
+  async function () {
+    await expect(await signupPage.registerationSucceeded).toBeExisting();
+  }
+);
 Then(
   /^the user will be redirected to register-succeeded page$/,
   async function () {
-    await browser.url("/register-succeeded");
+    await expect(await signupPage.registerationSucceeded).toBeExisting();
   }
 );
 
 Then(/^the user will recieve an activate link to his email$/, function () {});
 
 /*
-    Scenario: let the field empty
+    Scenario: sign up with invalid inputs
 
 */
+// All steps in the sharedSteps.ts file
 
-Given(
-  /^the user has not filled \"([^\"]*)\" input$/,
-  async function (expectedValue: string) {
-    await signupPage.submitForm(expectedValue, expectedValue, expectedValue);
-  }
-);
-
-Then(
-  /^the user will see a (.+) message$/,
-  async function (expectedValue: string) {
-    await expect(signupPage.signupErrorMessages[0]).toHaveText(expectedValue);
-  }
-);
 /*
     Scenario: sign up with used email
 
 */
-Given(/^the user inputted an used email$/, async function () {
-  await signupPage.submitForm(
-    "alisaelh@gmail.com",
-    "@Fv00110011",
-    "@Fv00110011"
-  );
-});
+
+Given(
+  /^the user filled the email input with correct email that has been used before$/,
+  async function () {
+    await signupPage.inputNameProperty("email").setValue(validEmail);
+  }
+);
 
 Then(
   /^the user will see be informed that the email has been used before$/,
-  function () {}
+  async function () {
+    await expect(await signupPage.errorMessage).toBeExisting();
+  }
 );
 
 /*
@@ -157,10 +141,8 @@ Then(
     Scenario: Activate the account
 
 */
-Given(/^the user has inputted the activation link in the url$/, function () {});
-
-When(/^the user presses enter$/, async function () {
-  await browser.keys("Enter");
+Given(/^the user clicked on the activation link$/, function () {
+  browser.url("activated");
 });
 
 Then(/^the account will be activated$/, function () {});
@@ -169,15 +151,15 @@ Then(/^the user will be redirected to the activated page$/, async function () {
   await expect(await signupPage.activatedPageHero).toBeExisting();
 });
 
-// Then(
-//   /^the user will see a successful message of account activation$/,
-//   async function () {
-//     await expect(await signupPage.activatedPageHero).toBeExisting();
-//   }
-// );
+Then(
+  /^the user will see a successful message of account activation$/,
+  async function () {
+    await expect(await signupPage.activatedPageHero).toBeExisting();
+  }
+);
 
 Then(/^the user will be able to navigate to sign in page$/, async function () {
-  await $("a").click();
+  await expect(await await $("a")).toBeExisting();
 });
 
 /*
@@ -189,12 +171,14 @@ Given(/^the user is authenticated$/, async function () {
   await expect(await $("a[href='/logout']")).toBeExisting();
 });
 
+Given(/^the user accessed the sign up page$/, async function () {
+  signupPage.open();
+});
+
 Then(
   /^the user will see a message that tells him he can start the competition$/,
   async function () {
-    // await loginPage.open("/signup");
-    // await $("h5").waitForDisplayed({ timeout: 60000 });
-    // await expect(await $("h5=اشترك الآن")).toBeExisting();
+    await expect(await $("h5=اشترك الآن")).toBeExisting();
   }
 );
 
@@ -226,26 +210,20 @@ Then(
   }
 );
 
-Then(
-  /^the user will be able to submit the form in sign in page$/,
-  async function () {
-    await expect(await loginPage.btnSubmit).toHaveAttr("type", "submit");
-  }
-);
+Then(/^the user will be able to submit the form$/, async function () {
+  await expect(await loginPage.btnSubmit).toHaveAttr("type", "submit");
+});
 
 Then(
-  /^the user will be able to navigate to the forgot page from sign in page$/,
+  /^the user will be able to navigate to the forgot page$/,
   async function () {
     await expect(await loginPage.forgotPasswordLink).toBeExisting();
   }
 );
 
-Then(
-  /^the user will be able to navigate to sign up page from sign in page$/,
-  async function () {
-    await expect(await loginPage.signupLink).toBeExisting();
-  }
-);
+Then(/^the user will be able to navigate to sign up page$/, async function () {
+  await expect(await loginPage.signupLink).toBeExisting();
+});
 
 /*
     Scenario: successful sign in

@@ -7,13 +7,12 @@ class SignupPage extends Page {
   /**
    * define selectors using getter methods
    */
-   get navToSignup() {
+  get navToSignup() {
     return $("a[href='/signup']");
   }
   get form() {
     return $("form");
   }
-
 
   async submitForm(
     email: string,
@@ -27,6 +26,10 @@ class SignupPage extends Page {
 
   get getSubmitMessage() {
     return $(".go3958317564");
+  }
+
+  get registerationSucceeded() {
+    return $("div[data-sut-registeration-succeeded='true']");
   }
 
   get signupErrorMessages() {

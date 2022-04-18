@@ -36,7 +36,7 @@ When(/^the user submits the form$/, async function () {
 });
 
 // Shared Then(s)
-Then(/^the user will a successfull message$/, async function () {
+Then(/^the user will see a successful message$/, async function () {
   await expect(await sharedPage.successMessage).toBeExisting();
 });
 
@@ -49,3 +49,7 @@ Then(
     );
   }
 );
+
+Then(/^the user shall be able to submit the form$/, async function () {
+  await expect(await sharedPage.btnSubmit).toBeExisting();
+});

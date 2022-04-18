@@ -139,12 +139,12 @@ When(/^the user submits the questions form$/, async function () {
   await competitionPage.btnSubmit.click();
 });
 
-Then(
-  /^the user will see a successful message for sending his answers$/,
-  async function () {
-    await expect(await competitionPage.comepetitionMessage).toBeExisting();
-  }
-);
+// Then(
+//   /^the user will see a successful message for sending his answers$/,
+//   async function () {
+//     await expect(await competitionPage.comepetitionMessage).toBeExisting();
+//   }
+// );
 
 /*
     Scenario: submit the form of the questions without missing any multi choice question but missed one or more of their fatwa number

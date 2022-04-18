@@ -14,7 +14,7 @@ Feature: Profile
         And the user filled the country input
         And the user filled the phone number with numbers only
         When the user submits the form
-        Then the user will a successfull message
+        Then the user will see a successful message
 
 
     Scenario Outline: Update Profile form with invalid inputs

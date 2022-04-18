@@ -20,7 +20,7 @@ export default class Page {
   get formInputs() {
     return $("form").$$("input");
   }
- 
+
   // Get form submit button
   get btnSubmit() {
     return $("button[type=submit]");
@@ -44,21 +44,29 @@ export default class Page {
   }
 
   async violatedInputs(validityRule: string, inputName: string) {
-    if (inputName === "tel" && validityRule === "max 399") {
-      await this.inputNameProperty(inputName).setValue(6);
-      await this.inputNameProperty(inputName).setValue(invalidTelInput);
+    if (inputName === "email" && validityRule === "email") {
+      await this.inputNameProperty(inputName).setValue("amer23");
     }
     //
-    else if (inputName === "email" && validityRule === "email") {
+    else if (inputName === "password" && validityRule === "minLength_8") {
       await this.inputNameProperty(inputName).setValue("amer23");
     }
     //
     else if (
       inputName === "password" &&
-      validityRule === "upper-lower-number charaters"
+      validityRule === "upper_lower_number"
     ) {
-      return "يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام";
-    } else if (inputName === "country" && validityRule === "required") {
+      await this.inputNameProperty(inputName).setValue("ammmmermmmmer");
+    }
+    //
+    else if (
+      inputName === "password_confirmation" &&
+      validityRule === "match_password"
+    ) {
+      await this.inputNameProperty(inputName).setValue("1");
+    }
+    //
+    else if (inputName === "country" && validityRule === "required") {
       const countryInput = await $("input[id='react-select-3-input']");
       const countryList = await $("div[id='react-select-3-listbox']");
       await new Promise((resolve, reject) => {
@@ -66,7 +74,9 @@ export default class Page {
       });
       await countryInput.setValue("");
       await this.btnSubmit.click();
-    } else if (inputName === "message" && validityRule === "required") {
+    }
+    //
+    else if (inputName === "message" && validityRule === "required") {
       await $(`textarea[name=${inputName}]`).setValue("a");
       await $(`textarea[name=${inputName}]`).setValue("");
     }
@@ -74,6 +84,11 @@ export default class Page {
     else if (inputName === "tel" && validityRule === "required") {
       await this.inputNameProperty(inputName).setValue(15515565);
       await this.inputNameProperty(inputName).setValue("");
+    }
+    //
+    else if (inputName === "tel" && validityRule === "max 399") {
+      await this.inputNameProperty(inputName).setValue(6);
+      await this.inputNameProperty(inputName).setValue(invalidTelInput);
     }
     //
     else {
@@ -87,8 +102,12 @@ export default class Page {
       return $("form").$$("span=هذا الحقل مطلوب")[0];
     } else if (validityRule === "email") {
       return $("span=البريد الألكتروني غير صحيح");
-    } else if (validityRule === "upper-lower-number charaters") {
-      return "يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام";
+    } else if (validityRule === "minLength_8") {
+      return $("span=يجب أن تتألف كلمة السر من 8 محارف على الأقل");
+    } else if (validityRule === "upper_lower_number") {
+      return $("span=يجب ان تحوي أحرف إنكليزية صغيرة وكبيرة وأرقام");
+    } else if (validityRule === "match_password") {
+      return $("span=يجب أن تكون كلمة السر مطابقة");
     } else {
       return $("form").$$("span=هذا الحقل مطلوب")[0];
     }

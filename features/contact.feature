@@ -11,7 +11,7 @@ Feature: Contact page
     And the user filled the subject input
     And the user filled the message input
     When the user submits the form
-    Then the user will a successfull message
+    Then the user will see a successful message
 
   Scenario Outline: Send a message with invalid inputs
     Given the user is on the contact page

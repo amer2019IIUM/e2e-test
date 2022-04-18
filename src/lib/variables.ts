@@ -1,4 +1,5 @@
 export const validEmail: string = "testgaber1234@gmail.com";
+export const neverUsedEmail: string = "nevereverused@gmail.com";
 export const unactivatedEmail: string = "test5678@gmail.com";
 export const wrongEmail: string = "exexexe@gmail.com";
 // export const validPassword: string = "@Mm0114741";
