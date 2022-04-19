@@ -15,7 +15,6 @@ class NavigationPage extends Page {
   }
   async SidebarItems(navItem) {
     const items: any = await this.navItems;
-    console.log(items.length);
     for (let index = 0; index < items.length; index++) {
       return await expect(await items[index].getText()).toHaveText(navItem);
     }

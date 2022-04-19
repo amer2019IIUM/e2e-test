@@ -9,7 +9,6 @@ import {
   unactivatedEmail,
   wrongEmail,
   neverUsedEmail,
-  invalidNameInput,
   invalidLengthInput,
 } from "../../src/lib/variables";
 
@@ -19,9 +18,6 @@ import {
 
 Given(/^the user is not authenticated$/, async function () {
   browser.url("/logout");
-  // await expect(
-  //   await $("buttton[data-sut-hero-auth-login-button='true']")
-  // ).toBeExisting();
 });
 
 Given(/^the user is on the sign up page$/, async function () {
@@ -184,6 +180,7 @@ Then(/^the user will be able to navigate to sign in page$/, async function () {
 Given(/^the user is authenticated$/, async function () {
   await loginPage.login(process.env.VALID_EMAIL, process.env.VALID_PASSWORD);
   await expect(await $("a[href='/logout']")).toBeExisting();
+  await loginPage.globalAxiosHeader();
 });
 
 Given(/^the user accessed the sign up page$/, async function () {
@@ -336,12 +333,9 @@ Then(
     Scenario : logout page
 */
 
-Given(
-  /^the user has typed in the url \"([^\"]*)\"$/,
-  async function (expectedValue) {
-    await browser.url(expectedValue);
-  }
-);
+Given(/^the user accessed the logout page$/, async function () {
+  await browser.url("logout");
+});
 
 Then(/^the user will logout from the website$/, function () {});
 

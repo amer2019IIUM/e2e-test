@@ -1,3 +1,4 @@
+import axios from "axios";
 import { API_URL } from "../src/config/urls";
 import { axiosGet } from "../src/lib/helpers";
 import { click, setText } from "../src/utils/commands";
@@ -11,8 +12,17 @@ class CompetitionPage extends Page {
    * define selectors using getter methods
    */
 
+  // async fetchQuiz() {
+  //   await axiosGet(`${API_URL}competition`)
+  //     .then((items) => {
+  //       console.log(items);
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //     });
+  // }
   get navToQuiz() {
-    return $("a[href='/quiz']");
+    return $("button[data-sut-quiz-home-btn='true']");
   }
 
   get navToProfile() {

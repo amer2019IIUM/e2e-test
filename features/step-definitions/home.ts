@@ -2,8 +2,7 @@ import { Given, Then } from "@cucumber/cucumber";
 import homePage from "../../pageObjects/home.page";
 
 Given(/^the user is on the Home page$/, async function () {
-  await homePage.menuBtn.click();
-  await homePage.navToHome.click();
+  homePage.open();
 });
 
 Then(/^the user will see the hero section$/, async function () {

@@ -8,7 +8,7 @@ const assert = require("assert");
 */
 
 Given(/^the user is on the competition page$/, async function () {
-  await competitionPage.menuBtn.click();
+  await expect(await competitionPage.navToQuiz).toBeExisting();
   await competitionPage.navToQuiz.click();
 });
 

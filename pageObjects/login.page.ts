@@ -1,3 +1,4 @@
+import axios from "axios";
 import { validEmail, validPassword } from "../src/lib/variables";
 import Page from "./page";
 
@@ -8,7 +9,6 @@ class LoginPage extends Page {
   /**
    * define selectors using getter methods
    */
-
   get navToLogin() {
     return $("a[href='/login']");
   }
@@ -62,6 +62,23 @@ class LoginPage extends Page {
   get logoutBtn() {
     return $("button");
   }
+  
+  async globalAxiosHeader() {
+    const obj: any = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    const user: any = await browser.execute(async function () {
+      return await JSON.parse(window.localStorage.getItem("auth_info"));
+    });
+
+    if (user && user.user_id) {
+      obj["Authorization"] = `Bearer ${user.user_id}|${user.access_token}`;
+    }
+
+    axios.defaults.headers = obj;
+  }
+
   open() {
     return super.open("/login");
   }
