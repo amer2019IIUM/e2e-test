@@ -10,10 +10,14 @@ class NavigationPage extends Page {
   get heroSection() {
     return $("div[data-sut-description-section='true']");
   }
-  async SidebarItems() {
-    const items: any = await $("nav").$$("span[data-sut-sidebar-nav='true']");
+  get navItems() {
+    return $$("span[data-sut-sidebar-nav='true']");
+  }
+  async SidebarItems(navItem) {
+    const items: any = await this.navItems;
+    console.log(items.length);
     for (let index = 0; index < items.length; index++) {
-      return $("li")[index].$("span").getText();
+      return await expect(await items[index].getText()).toHaveText(navItem);
     }
   }
   get islamqaLink() {

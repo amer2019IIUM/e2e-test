@@ -19,7 +19,9 @@ import {
 
 Given(/^the user is not authenticated$/, async function () {
   browser.url("/logout");
-  await expect(await $("a[href='/login']")).toBeExisting();
+  // await expect(
+  //   await $("buttton[data-sut-hero-auth-login-button='true']")
+  // ).toBeExisting();
 });
 
 Given(/^the user is on the sign up page$/, async function () {

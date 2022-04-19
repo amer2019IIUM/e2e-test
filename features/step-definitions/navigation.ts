@@ -1,31 +1,33 @@
-import { Before, Given, Then, When } from "@cucumber/cucumber";
+import { Given, Then, When } from "@cucumber/cucumber";
 import homePage from "../../pageObjects/home.page";
 import navigationPage from "../../pageObjects/navigation.page";
-const assert = require("assert");
 
 /*
     Scenario Outline: Sidebar
 */
 
 Given(/^the user is on a page$/, async function () {
-  await expect(await navigationPage.menuBtn).toBeExisting();
-});
-
-Then(/^the user will see the (.+) item$/, async function (navigationItems) {
-  const itemsList = navigationItems.split(",");
-
-  itemsList.forEach(async (item: string) => {
-    await assert.equal(await navigationPage.SidebarItems(), item);
-  });
+  browser.url("/");
 });
 
 Then(
-  /^the user will able to navigate to (.+) page$/,
+  /^the user will see the \"([^\"]*)\" item$/,
   async function (navigationItems) {
     const itemsList = navigationItems.split(",");
 
-    itemsList.forEach(async (item: string) => {
-      await assert.equal(await navigationPage.SidebarItems(), item);
+    await itemsList.forEach(async (item: string) => {
+      await navigationPage.SidebarItems(item);
+    });
+  }
+);
+
+Then(
+  /^the user will able to navigate to \"([^\"]*)\" page$/,
+  async function (navigationItems) {
+    const itemsList = navigationItems.split(",");
+
+    await itemsList.forEach(async (item: string) => {
+      await navigationPage.SidebarItems(item);
     });
   }
 );
