@@ -15,33 +15,42 @@ Given(/^the user is on the competition page$/, async function () {
 Given(
   /^an active competition is published to the users with at least one question with multichoices questions$/,
   async function () {
-    await expect(await competitionPage.form).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(!data.questions.length, false);
   }
 );
 
 Given(
   /^the date of the competition is on the day that the user visited the competition$/,
   async function () {
-    await expect(await competitionPage.form).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(!data.questions.length, false);
   }
 );
 
 Given(
   /^the user did not give any attempt in the given competition$/,
   async function () {
-    // await expect(await competitionPage.form).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(!data.questions.length, false);
   }
 );
 
 Then(
   /^the user will see a list of questions sorted by created date in desc order$/,
   async function () {
-    await expect(await competitionPage.form).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(!data.questions.length, false);
   }
 );
 
 Then(/^the user will be able to answer all the questions$/, async function () {
-  await expect(await competitionPage.btnSubmit).toBeExisting();
+  const questionsAnswers = await competitionPage.radioInputs;
+
+  for (let index = 0; index < questionsAnswers.length; index++) {
+    await browser.waitUntil(() => questionsAnswers[index].isClickable());
+    questionsAnswers[index].click();
+  }
 });
 
 Then(/^the user will be able submit the answers$/, async function () {
@@ -49,35 +58,50 @@ Then(/^the user will be able submit the answers$/, async function () {
 });
 
 /*
-    Scenario: there is no any competition published at all
+    Scenario: there is no competition has been set up in the competition settings in the system
 */
 
-Given(/^there is no any competition published at all$/, async function () {
-  await expect(await competitionPage.comepetitionMessage).toBeExisting();
+Then(/^the user will be informed that \"([^\"]*)\"$/, async function (message) {
+  const data = await competitionPage.checkQuiz();
+  if (data.message.includes(message)) {
+    assert.equal(true, true);
+  } else {
+    assert.equal(false, true);
+  }
 });
 
-Then(
-  /^the user will be informed that there is no competition available$/,
-  async function () {
-    await expect(await competitionPage.comepetitionMessage).toBeExisting();
-  }
-);
-
 /*
-    Scenario: no competition today
+    Scenario: the competition date has been set up for a past date
 */
 
 Given(
   /^the competition date is smaller than the current date$/,
   async function () {
-    await expect(await competitionPage.comepetitionMessage).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(await data.success, false);
   }
 );
 
-Then(
-  /^the user will be informed that there is no competition available today, try tomorrow.$/,
+/*
+    Scenario: the competition date has been set up for a future date
+*/
+
+Given(
+  /^the competition date is greater than the current date$/,
   async function () {
-    await expect(await competitionPage.comepetitionMessage).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(await data.success, false);
+  }
+);
+
+Given(
+  /^there is a competition has been set up in the competition settings in the system$/,
+  async function () {
+    const data = await competitionPage.checkQuiz();
+    assert.notEqual(
+      await data.message,
+      "عذراً، لا يوجد مسابقة في الوقت الحالي."
+    );
   }
 );
 
@@ -88,20 +112,15 @@ Then(
 Given(
   /^the competition date is the acual date that the user sent his answers$/,
   async function () {
-    await expect(await competitionPage.comepetitionMessage).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(await data.success, false);
   }
 );
 
-Given(/^the user atempted the competition$/, async function () {
-  await expect(await competitionPage.comepetitionMessage).toBeExisting();
+Given(/^the user attempted the competition$/, async function () {
+  const data = await competitionPage.checkQuiz();
+  assert.equal(await data.success, false);
 });
-
-Then(
-  /^the user will be informed that he cannot attempt the competition again$/,
-  async function () {
-    await expect(await competitionPage.comepetitionMessage).toBeExisting();
-  }
-);
 
 /*
     Scenario: submit the form of the questions without missing any multi choice question
@@ -110,19 +129,16 @@ Then(
 Given(
   /^the user visited the competition at the competition day$/,
   async function () {
-    await expect(await competitionPage.form).toBeExisting();
+    const data = await competitionPage.checkQuiz();
+    assert.equal(!data.questions.length, false);
   }
 );
 
 Given(/^the user has updated the profile$/, async function () {
-  await competitionPage.menuBtn.click();
-  await competitionPage.navToProfile.click();
-  await expect(await competitionPage.form).toBeExisting();
-  await new Promise((resolve, reject) => {
-    setTimeout(resolve, 2000);
-  });
-  await competitionPage.btnSubmit.click();
-  await expect(await competitionPage.successMessage).toBeExisting();
+  const data = await competitionPage.isProfileUpdated();
+  assert.equal(!!data.name, true);
+  assert.equal(!!data.country, true);
+  assert.equal(!!data.tel, true);
 });
 
 Given(/^the user answered all the multichoice questions$/, async function () {
@@ -139,12 +155,12 @@ When(/^the user submits the questions form$/, async function () {
   await competitionPage.btnSubmit.click();
 });
 
-// Then(
-//   /^the user will see a successful message for sending his answers$/,
-//   async function () {
-//     await expect(await competitionPage.comepetitionMessage).toBeExisting();
-//   }
-// );
+Then(
+  /^the user will see a successful message for sending his answers$/,
+  async function () {
+    await expect(await competitionPage.comepetitionMessage).toBeExisting();
+  }
+);
 
 /*
     Scenario: submit the form of the questions without missing any multi choice question but missed one or more of their fatwa number
@@ -161,7 +177,7 @@ Given(/^the user did not input the fatwas number$/, async function () {
 Given(/^the user missed one or more multichoices questions$/, function () {});
 
 Then(
-  /^the user will see an error message as a red color on the unanswered question$/,
+  /^the question will be highlighted to let the user know that question not answered yet$/,
   async function () {
     await expect(
       await competitionPage.unansweredQuestionHeighted
@@ -174,35 +190,21 @@ Then(
 */
 
 Given(/^the user has not updated the profile$/, async function () {
-  await competitionPage.menuBtn.click();
-  await competitionPage.navToProfile.click();
-  await expect(await competitionPage.form).toBeExisting();
-  await new Promise((resolve, reject) => {
-    setTimeout(resolve, 2000);
-  });
-  await competitionPage.btnSubmit.click();
-  await expect(await $("span=هذا الحقل مطلوب")).toHaveText("هذا الحقل مطلوب");
+  const data = await competitionPage.isProfileUpdated();
+  if (!data.name || !data.country || !data.tel) {
+    assert.equal(true, true);
+  }
 });
 
 Then(
-  /^the user will see a modal that contains the update profile form with its inputs:name, country, phone no$/,
+  /^the user will see a modal that contains an update profile form$/,
   async function () {
     await expect(await competitionPage.profileModalForm).toBeExisting();
-    await expect(
-      await competitionPage.profileModalForm.$("input[name='name']")
-    ).toBeExisting();
-    await expect(
-      await competitionPage.profileModalForm.$("input[name='country']")
-    ).toBeExisting();
-    await expect(
-      await competitionPage.profileModalForm.$("input[name='tel']")
-    ).toBeExisting();
   }
 );
 
 Then(/^the user will be able to update the profile$/, async function () {
-  await profilePage.updateProfile("amer", "Yemen", 124545);
-  browser.keys("Enter");
+  await expect(await competitionPage.btnSubmit).toBeExisting();
 });
 
 /*
@@ -210,12 +212,13 @@ Then(/^the user will be able to update the profile$/, async function () {
 */
 
 Given(/^there is a pdf file uploaded$/, async function () {
-  await expect(await competitionPage.isThereErrorTextMessage).toBeExisting();
+  const data = await competitionPage.checkQuiz();
+  assert.equal(!!data.file_url, true);
+
   await browser.waitUntil(() =>
     competitionPage.isThereErrorTextMessage.isClickable()
   );
   await competitionPage.isThereErrorTextMessage.click();
-  await expect(await competitionPage.isTherePdfFilelink).toBeExisting();
 });
 
 Then(/^the user will see the details message$/, async function () {
@@ -274,4 +277,7 @@ Then(/^the user will see his number of attempts$/, async function () {
 
 Given(/^the users accessed the competition page$/, function () {
   browser.url("quiz");
+});
+Then(/^the user will be redirected to the login page$/, async function () {
+  await expect(await competitionPage.form).toBeExisting();
 });

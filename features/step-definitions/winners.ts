@@ -1,6 +1,7 @@
 import { Given, Then } from "@cucumber/cucumber";
+import * as assert from "assert";
 import winnersPage from "../../pageObjects/winners.page";
-const assert = require("assert");
+
 
 /*
 

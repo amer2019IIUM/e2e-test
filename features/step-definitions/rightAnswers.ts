@@ -15,7 +15,7 @@ Show Right answers
 
 */
 
-Given(/^there is an active competition$/, async function () {
+Given(/^there is a published competition$/, async function () {
   assert.equal(await rightAnswersPage.checkRightAnswers(), true);
 });
 

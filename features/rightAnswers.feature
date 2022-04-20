@@ -13,7 +13,7 @@ Feature: Right Answers
 
     Scenario: Filter the answers
         Given the user clicked on a select input
-        And there is an active competition
+        And there is a published competition
         When the user selects the day of the competition
         Then the users will see the right answers of the selected day
 
