@@ -8,6 +8,9 @@ class WinnersPage extends Page {
   /**
    * define selectors using getter methods
    */
+  get navToWinners() {
+    return $("a[href='/right-answers']");
+  }
 
   async checkWinnersData() {
     const data = await axiosGet(`${API_URL}winners`);
