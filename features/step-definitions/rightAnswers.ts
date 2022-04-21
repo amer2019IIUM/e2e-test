@@ -6,14 +6,27 @@ const assert = require("assert");
 Background Given
 */
 Given(/^the user is on the right answers page$/, async function () {
-  await rightAnswersPage.open();
+  browser.url("/");
+  await rightAnswersPage.menuBtn.click();
+  await rightAnswersPage.navToRightAnswers.click();
 });
-
 /*
 
 Show Right answers 
 
 */
+Given(
+  /^there is some competitions has been expired from the starting date$/,
+  async function () {
+    assert.equal(await rightAnswersPage.checkRightAnswers(), true);
+  }
+);
+Given(
+  /^there is some competition has been expired from the starting date of the competition$/,
+  async function () {
+    assert.equal(await rightAnswersPage.checkRightAnswers(), true);
+  }
+);
 
 Given(/^there is a published competition$/, async function () {
   assert.equal(await rightAnswersPage.checkRightAnswers(), true);
@@ -33,15 +46,12 @@ Then(
   }
 );
 
-Then(
-  /^the user will see the active competition answers before the current date$/,
-  async function () {
-    await expect(await rightAnswersPage.checkRightAnswerIsExist).toBeExisting();
-  }
-);
+Then(/^the user will see the active competition answers$/, async function () {
+  await expect(await rightAnswersPage.checkRightAnswerIsExist).toBeExisting();
+});
 
 Then(
-  /^the user will able to choose any day of the active competition that is before the current date$/,
+  /^the user will able to choose any day of the active competition$/,
   async function () {
     await expect(
       await rightAnswersPage.selectAnswersDayOption[0]
@@ -104,10 +114,6 @@ Then(
 /*
 No Right answers because not started yet
 */
-
-Given(
-  /^the active competition date is greater than the current date$/,
-  async function () {
-    assert.equal(await rightAnswersPage.checkRightAnswers(), false);
-  }
-);
+Given(/^the competition has not started yet$/, async function () {
+  assert.equal(await rightAnswersPage.checkRightAnswers(), false);
+});

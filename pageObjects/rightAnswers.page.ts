@@ -8,13 +8,8 @@ class RightAnswersPage extends Page {
   /**
    * define selectors using getter methods
    */
-
-  async checkRightAnswers() {
-    const data = await axiosGet(`${API_URL}right-answers`);
-    if (data.length > 0) {
-      return true;
-    }
-    return false;
+  get navToRightAnswers() {
+    return $("a[href='/right-answers']");
   }
   get checkRightAnswerIsExist() {
     return $$("h5[data-sut-rightAnswer='true']");
@@ -24,6 +19,15 @@ class RightAnswersPage extends Page {
   }
   get selectAnswersDayOption() {
     return $("select").$$("option");
+  }
+
+  // Fetching Functions
+  async checkRightAnswers() {
+    const data = await axiosGet(`${API_URL}right-answers`);
+    if (data.length > 0) {
+      return true;
+    }
+    return false;
   }
   open() {
     return super.open("/right-answers");

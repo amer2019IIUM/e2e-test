@@ -61,6 +61,14 @@ Then(/^the user will be able submit the answers$/, async function () {
     Scenario: there is no competition has been set up in the competition settings in the system
 */
 
+Given(
+  /^there is no competition has been set up in the competition settings in the system$/,
+  async function () {
+    const data = await competitionPage.checkQuiz();
+    assert.equal(await data.success, false);
+  }
+);
+
 Then(/^the user will be informed that \"([^\"]*)\"$/, async function (message) {
   const data = await competitionPage.checkQuiz();
   if (data.message.includes(message)) {
